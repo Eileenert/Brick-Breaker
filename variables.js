@@ -26,10 +26,13 @@ var brickRowCount = (canvas.width - brickOffsetLeft) / (briquewidth + briquePadd
 var couleur2 = "#4159B9";
 var couleur1 = "#66ccff";
 
-
-
+//image étoile
+var img = document.getElementById("star");
 
 var rightPressed = false;
 var leftPressed = false;
 
 var interval = setInterval(draw, 10);
+
+var tempsTimer = 0; //10 secondes de pouvoirs
+const timerElement = document.getElementById("timer")

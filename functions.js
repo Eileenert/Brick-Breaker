@@ -38,67 +38,15 @@ function drawPaddle() {
     ctx.closePath();
 }
 
-
-
-
-/* 
-Fonctionne, mais j'ai eu un problème lorsque je voulais supprimer les briques donc j'ai changé de méthode
-
-
-var briqueList = [];
-var brique = 0;
-
-class Brique {
-    constructor(xb, yb) {
-        ctx.beginPath();
-        ctx.rect(xb, yb, 50, 15); //coordonnées du point supérieur gauche, largeur, hauteur
-        ctx.fillStyle = "#E667CE";
-        ctx.fill();
-        this.xb = xb;
-        this.yb = yb;
-    }
-
-
-
+// fonction qui dessine l'étoile
+function drawStar(brickX, brickY) {
+    // METTRE UNE IMAGE AVEC FOND NON TRANSPARENTS
+    img.style.display = "block";
+    paddleWidth += 75;
 }
 
 
-
-//fonction qui dessine les briques
-function drawBricks() {
-
-    // x
-    for (let yb = 5; yb < canvas.height / 2; yb += briqueHeight + 5) {
-        // y
-        for (let xb = 25; xb < canvas.width - 50; xb += briquewidth + 5) {
-                brique = new Brique(xb, yb); // STOCKER DANS UNE LISTE ET CHANGER LA FONCTION COLLISION / CREER UNE METHODE DELETE DANS LA CLASSE BRIQUE
-                briqueList.push(brique);
-            }
-
-        }
-    }
-
-
-// collison briques
-
-function collision() {
-    //x > brique.x et x < brique.x + brique.width
-    // et y > brique.y et y < brique.y + brique.height
-
-    for (var i in briqueList) {
-        if (x > briqueList[i].xb && x < briqueList[i].xb + briquewidth && y > briqueList[i].yb && y < briqueList[i].yb + briqueHeight) {
-            dy = -dy;
-
-            //ctx.clearRect(xb, yb, briquewidth, briqueHeight);
-            //briqueList.splice(briqueList[i], 1);
-        }
-    }
-
-}
-
-*/
-
-
+//list contenant les informations sur chaque briques
 var briqueList = [];
 
 for (var i = 0; i < brickColumnCount; i++) {
@@ -106,7 +54,7 @@ for (var i = 0; i < brickColumnCount; i++) {
     for (var j = 0; j < brickRowCount; j++) {
 
         if (i % 4 == 0) {
-            briqueList[i][j] = { x: 0, y: 0, status: 2 };
+            briqueList[i][j] = { x: 0, y: 0, status: 2, star: Math.round(Math.random()) }; //met une étoile au hasard dans une double brique
         } else {
             briqueList[i][j] = { x: 0, y: 0, status: 1 };
         }
@@ -114,8 +62,9 @@ for (var i = 0; i < brickColumnCount; i++) {
     }
 }
 
+// deessine les briques
 function drawBricks() {
-
+    var img = document.getElementById("star");
     for (var c = 0; c < brickColumnCount; c++) {
         for (var r = 0; r < brickRowCount; r++) {
 
@@ -126,13 +75,16 @@ function drawBricks() {
                 briqueList[c][r].x = brickX;
                 briqueList[c][r].y = brickY;
 
+
                 ctx.beginPath();
                 ctx.rect(brickX, brickY, briquewidth, briqueHeight);
                 if (briqueList[c][r].status == 2) {
                     ctx.fillStyle = couleur2;
+
                 } else if (briqueList[c][r].status == 1) {
                     ctx.fillStyle = couleur1;
                 }
+
 
                 ctx.fill();
                 ctx.closePath();
@@ -144,6 +96,7 @@ function drawBricks() {
 
 }
 
+// fonction qui detecte les collisions briques/balle
 function collisionDetection() {
     statusArray = [];
 
@@ -155,9 +108,33 @@ function collisionDetection() {
             if (b.status >= 1) {
                 if (x > b.x && x < b.x + briquewidth && y > b.y && y < b.y + briqueHeight + ballRadius) {
                     dy = -dy;
-                    //-= CAR JE VEUX ENSUITE QUE LE STATUS CORRESPONDE A LA RESISTANCE DE LA BRIQUE
+                    // status correspond à la résistance de la brique
                     b.status -= 1;
                 }
+            }
+
+            if (b.status == 0 && b.star == 1) { //quand brique casse et contient une étoile
+                
+                drawStar(briqueList[c][r].x, briqueList[c][r].y);
+                tempsTimer += 5;
+
+                var timerInterval = setInterval(() => {
+                    timerElement.innerText = `${tempsTimer}`    //afficher temps
+            
+                    if(tempsTimer <= 0){
+                        tempsTimer = 0;
+                        paddleWidth = 75;   //remettre la raquette à la bonne taille
+                        img.style.display = "none";
+                        stop(timerInterval);
+                    }
+                    else{
+                        tempsTimer -= 1;
+                    }
+
+                  }, 1000)
+
+                  b.star -= 1;
+                  
             }
             // ensuite pour savoir si il y a encore des briques
             statusArray.push(briqueList[c][r].status);

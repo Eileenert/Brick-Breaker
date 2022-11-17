@@ -73,10 +73,9 @@ function draw() {
     }
     //touche bas == fini
     else if (y + dy > canvas.height - ballRadius) {
-
         GameOver();
-
     }
+
 
 }
 setInterval(draw, 20) //appelée toutes les 10 millisecondes
