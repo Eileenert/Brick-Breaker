@@ -7,7 +7,7 @@ var dy = -1;
 var ballRadius = 10;
 
 // raquette
-var paddleHeight = 10;
+var paddleHeight = 8;
 var paddleWidth = 75;
 var paddleX = (canvas.width - paddleWidth) / 2;
 var paddleY = (canvas.height - paddleHeight) - 20;
@@ -34,5 +34,7 @@ var leftPressed = false;
 
 var interval = setInterval(draw, 10);
 
-var tempsTimer = 0; //10 secondes de pouvoirs
+var tempsTimer = ""; //10 secondes de pouvoirs
 const timerElement = document.getElementById("timer")
+
+var inter_running = 0;

@@ -42,7 +42,7 @@ function drawPaddle() {
 function drawStar(brickX, brickY) {
     // METTRE UNE IMAGE AVEC FOND NON TRANSPARENTS
     img.style.display = "block";
-    paddleWidth += 75;
+    paddleWidth = 150;
 }
 
 
@@ -114,27 +114,30 @@ function collisionDetection() {
             }
 
             if (b.status == 0 && b.star == 1) { //quand brique casse et contient une étoile
-                
+
                 drawStar(briqueList[c][r].x, briqueList[c][r].y);
                 tempsTimer += 5;
 
-                var timerInterval = setInterval(() => {
-                    timerElement.innerText = `${tempsTimer}`    //afficher temps
-            
-                    if(tempsTimer <= 0){
-                        tempsTimer = 0;
-                        paddleWidth = 75;   //remettre la raquette à la bonne taille
-                        img.style.display = "none";
-                        stop(timerInterval);
-                    }
-                    else{
-                        tempsTimer -= 1;
-                    }
+                if (inter_running == 0) { // pour ne pas avoir plusieur var timerInterval qui se créent en même temps
+                    var timerInterval = setInterval(() => {
+                        inter_running = 1;
 
-                  }, 1000)
+                        if (tempsTimer - 1 < 0) {
+                            tempsTimer = 0;
+                            paddleWidth = 75; //remettre la raquette à la bonne taille
+                            img.style.display = "none";
+                            tempsTimer = "";
+                            inter_running = 0;
+                            stop(timerInterval);
 
-                  b.star -= 1;
-                  
+                        } else {
+                            tempsTimer -= 1;
+                        }
+
+                    }, 1000)
+                }
+
+                b.star -= 1;
             }
             // ensuite pour savoir si il y a encore des briques
             statusArray.push(briqueList[c][r].status);

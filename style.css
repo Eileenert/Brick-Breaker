@@ -15,4 +15,13 @@ canvas {
     margin-left: auto;
     margin-right: auto;
     width: 10%;
+    margin-top: auto;
+}
+
+#timer {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    width: 10%;
+    font-size: 40px;
 }

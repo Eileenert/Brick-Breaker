@@ -1,35 +1,6 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
-/*
-
-// rectangle
-ctx.beginPath();
-ctx.rect(20, 40, 50, 50);   //coordonnées du point supérieur gauche, largeur, hauteur
-ctx.fillStyle = "#FF0000";
-ctx.fill();
-ctx.closePath();
-
-
-// cercle
-ctx.beginPath();
-//coordonnées x,y du centre de l'arc, rayon de l'arc, l'angle de départ et de fin, direction du dessin (false=aiguille montre, true = l'inverse)
-ctx.arc(240, 160, 20, 0, Math.PI * 2, false);
-ctx.fillStyle = "green";
-ctx.fill();
-ctx.closePath();
-
-//rectangle mais que contours en couleur
-ctx.beginPath();
-ctx.rect(160, 10, 100, 40);
-ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-ctx.stroke();
-ctx.closePath();
-
-*/
-
-
-
 
 
 // fonction principale
@@ -40,6 +11,9 @@ function draw() {
     drawPaddle();
     drawBricks();
     collisionDetection();
+
+    ctx.font = "bold 20px sherif" //temps pouvoir
+    ctx.fillText(`${tempsTimer}`, 20, canvas.height - 20, 100);
 
     x += dx;
     y += dy;
@@ -68,7 +42,7 @@ function draw() {
     }
     // si balle aux coordonnées de la raquette -> rebondit  (pas comme dans le tuto)
     //changer pour que ça cogne les côtés
-    if (y == paddleY - ballRadius && x > paddleX - ballRadius && x < paddleX + paddleWidth + ballRadius) {
+    if (y == paddleY - ballRadius && x >= paddleX - ballRadius && x <= paddleX + paddleWidth + ballRadius) {
         dy = -dy;
     }
     //touche bas == fini
