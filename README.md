@@ -1,4 +1,4 @@
-# casse-briques
- casse-briques en javascript dans le cadre du cours d'informatique os
+# brick breaker
+This is a javascript brick breaker that I did as part of the OS computer class.
 <br>
  https://eileenert.github.io/casse-briques/
